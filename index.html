@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Paleontology Research Expedition Programme</title>
+    <meta name="description" content="Student handbook for the Qujing palaeontology research expedition: four field tasks, an observation record, and a group science poster." />
+    <link rel="stylesheet" href="./css/app.css?v=38" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip To Content</a>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#/">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>
+            <strong>Paleontology Research Expedition Programme</strong>
+            <small>古生物科学研究 · Yew Chung Yew Wah</small>
+          </span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" id="navToggle">Menu</button>
+        <div class="lang-switch" id="langSwitch">
+          <button class="btn btn-ghost" type="button" data-lang="en">English</button>
+          <button class="btn btn-ghost" type="button" data-lang="zh">中文</button>
+          <button class="btn btn-ghost" type="button" data-lang="ko">한국어</button>
+        </div>
+        <a class="btn btn-ghost" id="termsLink" href="#/terms">Terms And Safety</a>
+        <a class="btn btn-ghost" id="mineLink" href="#/mine">My Work</a>
+        <span id="whoChip"></span>
+        <button class="btn btn-ghost" type="button" id="signOut">Sign Out</button>
+      </header>
+      <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+        <a href="#/trip">Itinerary</a>
+        <a href="#/qujing">Into Qujing</a>
+        <a href="#/rock">Fossils And Beds</a>
+        <a href="#/body">Ancient Fish Bodies</a>
+        <a href="#/ct">Inside With CT</a>
+        <a href="#/output">Record And Poster</a>
+        <a href="#/play">Try It</a>
+        <a href="#/watch">Watch</a>
+      </nav>
+      <main id="main" tabindex="-1"></main>
+      <footer class="site-foot">
+        <p>Yew Chung Yew Wah · Paleontology Research Expedition Programme</p>
+      </footer>
+      <nav class="bottom-nav" aria-label="Mobile">
+        <a href="#/">Home</a>
+        <a href="#/trip">Days</a>
+        <a href="#/qujing">Time</a>
+        <a href="#/rock">Beds</a>
+        <a href="#/body">Fish</a>
+        <a href="#/ct">CT</a>
+        <a href="#/output">Record</a>
+        <a href="#/play">Try</a>
+        <a href="#/watch">Watch</a>
+      </nav>
+    </div>
+    <script type="importmap">
+      { "imports": { "three": "./public/vendor/three.module.js" } }
+    </script>
+    <div class="sign-gate" id="signGate">
+      <form class="sign-card" id="signForm">
+        <p class="kicker">Paleontology Research Expedition Programme</p>
+        <h1 id="signTitle">Write Your Name</h1>
+        <div class="lang-switch">
+          <button class="btn btn-ghost" type="button" data-lang="en">English</button>
+          <button class="btn btn-ghost" type="button" data-lang="zh">中文</button>
+          <button class="btn btn-ghost" type="button" data-lang="ko">한국어</button>
+        </div>
+        <p id="signNote">Use your real name and email so the records on this site stay with you.</p>
+        <label id="signName"><span>Real Name</span><input name="name" autocomplete="name" required /></label>
+        <label id="signEmail"><span>Email</span><input name="email" type="email" autocomplete="email" required /></label>
+        <p class="feedback bad" id="signError" hidden></p>
+        <button class="btn btn-primary" type="submit" id="signGo">Enter</button>
+      </form>
+    </div>
+    <script type="module" src="./js/app.js?v=36"></script>
+  </body>
+</html>

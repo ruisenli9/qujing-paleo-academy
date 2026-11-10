@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+data/traces.jsonl
+data/students.json
+data/work/
+data/accounts.jsonl
+source_extracts/
+public/assets/pdf-pages/
+.env
+.env.*
