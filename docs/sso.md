@@ -10,4 +10,4 @@
 
 学生现在用真实姓名和邮箱进入。这次登录记在这台浏览器里，30 天内有效，同时写入服务器的学习记录。学生只能取回自己邮箱下的记录。
 
-回调地址必须在学校那边登记。本机是 `http://127.0.0.1:8765/auth/callback`。临时公开链接一变，回调也要改登记。
+回调地址必须在学校那边登记，并且带上网站所在的子路径。挂在 `https://edfutures.ycyw.com/pelaontology` 时，登记 `https://edfutures.ycyw.com/pelaontology/auth/callback`。本机没有子路径时是 `http://127.0.0.1:8765/auth/callback`。如果前面的反代把这段路径去掉了，给服务器环境变量 `APP_BASE=/pelaontology`，或让反代带上 `X-Forwarded-Prefix`。

@@ -1,5 +1,9 @@
 const KEY = "qujing-investigator-v1";
 
+export function siteUrl(path) {
+  return new URL(String(path || "").replace(/^\//, ""), document.baseURI).href;
+}
+
 const empty = () => ({
   version: 1,
   startedAt: Date.now(),
@@ -36,7 +40,7 @@ export function pushWork(id, patch) {
     return;
   }
   if (!person || !person.email) return;
-  return fetch("/api/work", {
+  return fetch(siteUrl("api/work"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email: person.email, name: person.name, id, patch })

@@ -1,5 +1,5 @@
 import { tr } from "./locale.js?v=16";
-import { loadState, pushWork, saveState } from "./storage.js?v=35";
+import { loadState, pushWork, saveState, siteUrl } from "./storage.js?v=36";
 
 const KEY = "qujing-student";
 const MONTH = 30 * 24 * 60 * 60 * 1000;
@@ -21,7 +21,7 @@ export async function pullWork() {
   const person = student();
   if (!person) return;
   try {
-    const response = await fetch("/api/work?email=" + encodeURIComponent(person.email));
+    const response = await fetch(siteUrl("api/work?email=" + encodeURIComponent(person.email)));
     if (!response.ok) return;
     const data = await response.json();
     const remote = data.units || {};
@@ -49,7 +49,7 @@ export async function trace(event) {
   const who = student();
   if (!who) return;
   try {
-    await fetch("/api/trace", {
+    await fetch(siteUrl("api/trace"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: who.email, name: who.name, ...event })
@@ -89,7 +89,7 @@ export function mountSession(onReady) {
     localStorage.setItem(KEY, JSON.stringify(record));
     error.hidden = true;
     paintWho();
-    await fetch("/api/account", {
+    await fetch(siteUrl("api/account"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(record)
@@ -111,7 +111,7 @@ export async function ownTraces() {
   const person = student();
   if (!person) return [];
   try {
-    const response = await fetch("/api/traces?email=" + encodeURIComponent(person.email));
+    const response = await fetch(siteUrl("api/traces?email=" + encodeURIComponent(person.email)));
     if (!response.ok) return [];
     const data = await response.json();
     return data.rows || [];

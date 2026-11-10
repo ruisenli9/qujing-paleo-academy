@@ -23,6 +23,7 @@ ISSUER = "https://oidc.ycyw.com"
 MONTH = 30 * 24 * 60 * 60 * 1000
 STATES = {}
 DISCOVERY = None
+APP_ROUTES = ("/api/trace", "/api/account", "/api/work", "/api/traces", "/auth/login", "/auth/callback")
 
 
 def oidc_ready():
@@ -80,9 +81,43 @@ def store_work(data):
         json.dump(data, handle, ensure_ascii=False)
 
 
+def explicit_prefix(handler):
+    raw = (os.environ.get("APP_BASE") or handler.headers.get("X-Forwarded-Prefix") or "").strip()
+    if not raw or raw == "/":
+        return ""
+    if not raw.startswith("/"):
+        raw = "/" + raw
+    return raw.rstrip("/")
+
+
+def inside_root(rel):
+    candidate = os.path.normpath(os.path.join(ROOT, rel.replace("/", os.sep)))
+    return candidate.startswith(ROOT) and os.path.exists(candidate)
+
+
+def split_mount(handler, raw_path):
+    path = urlparse(raw_path).path or "/"
+    prefix = explicit_prefix(handler)
+    if prefix and (path == prefix or path.startswith(prefix + "/")):
+        rest = path[len(prefix):] or "/"
+        return prefix, rest if rest.startswith("/") else "/" + rest
+    rel = path.strip("/")
+    if path in APP_ROUTES or path == "/" or (rel and inside_root(rel)):
+        return "", path
+    parts = rel.split("/", 1)
+    if len(parts) == 1 and parts[0] and "." not in parts[0] and not inside_root(parts[0]):
+        return "/" + parts[0], "/"
+    if len(parts) == 2:
+        rest = "/" + parts[1]
+        if rest in APP_ROUTES or inside_root(parts[1]):
+            return "/" + parts[0], rest
+    return "", path
+
+
 def public_base(handler):
     proto = handler.headers.get("X-Forwarded-Proto", "http").split(",")[0].strip() or "http"
-    return proto + "://" + handler.headers.get("Host", "127.0.0.1:8765")
+    prefix, _rest = split_mount(handler, handler.path)
+    return proto + "://" + handler.headers.get("Host", "127.0.0.1:8765") + prefix
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -97,8 +132,12 @@ class Handler(SimpleHTTPRequestHandler):
         raw = self.rfile.read(length) if length else b"{}"
         return json.loads(raw.decode("utf-8"))
 
+    def translate_path(self, path):
+        _prefix, rest = split_mount(self, path)
+        return super().translate_path(rest)
+
     def do_POST(self):
-        path = urlparse(self.path).path
+        _prefix, path = split_mount(self, self.path)
         if path not in ("/api/trace", "/api/account", "/api/work"):
             self.send_error(404)
             return
@@ -158,7 +197,8 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         parsed = urlparse(self.path)
-        if parsed.path == "/auth/login":
+        _prefix, path = split_mount(self, self.path)
+        if path == "/auth/login":
             if not oidc_ready():
                 self.send_json(503, {"ok": False, "reason": "school-login-not-configured"})
                 return
@@ -180,7 +220,7 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_header("Location", doc["authorization_endpoint"] + "?" + query)
             self.end_headers()
             return
-        if parsed.path == "/auth/callback":
+        if path == "/auth/callback":
             if not oidc_ready():
                 self.send_json(503, {"ok": False, "reason": "school-login-not-configured"})
                 return
@@ -214,10 +254,11 @@ class Handler(SimpleHTTPRequestHandler):
             os.makedirs(os.path.dirname(LOG), exist_ok=True)
             with open(LOG, "a", encoding="utf-8") as handle:
                 handle.write(json.dumps({"type": "sign-in", "via": "school", "name": name, "email": email, "signedAt": signed, "expires": record["expires"]}, ensure_ascii=False) + "\n")
+            home = public_base(self) + "/#/"
             page = (
                 "<!doctype html><meta charset=\"utf-8\"><title>Signed in</title><script>"
-                "localStorage.setItem('qujing-student', %s);location.replace('./#/');"
-                "</script>" % json.dumps(json.dumps(record, ensure_ascii=False))
+                "localStorage.setItem('qujing-student', %s);location.replace(%s);"
+                "</script>" % (json.dumps(json.dumps(record, ensure_ascii=False)), json.dumps(home))
             ).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
@@ -226,14 +267,14 @@ class Handler(SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(page)
             return
-        if parsed.path == "/api/work":
+        if path == "/api/work":
             email = parse_qs(parsed.query).get("email", [""])[0].strip()
             if "@" not in email:
                 self.send_json(400, {"units": {}})
                 return
             self.send_json(200, {"units": load_work(email).get("units", {})})
             return
-        if parsed.path == "/api/traces":
+        if path == "/api/traces":
             email = parse_qs(parsed.query).get("email", [""])[0].strip().lower()
             rows = []
             if os.path.exists(LOG) and email:
