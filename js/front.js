@@ -1,5 +1,5 @@
 import { tr } from "./locale.js?v=20";
-import { recordUnit } from "./storage.js?v=37";
+import { recordUnit } from "./storage.js?v=38";
 
 export function homePage() {
   const steps = [

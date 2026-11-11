@@ -1,7 +1,7 @@
 const KEY = "qujing-investigator-v1";
 
 export function siteUrl(path) {
-  return new URL("/pelaontology/" + String(path || "").replace(/^\//, ""), location.origin).href;
+  return new URL(String(path || "").replace(/^\//, ""), document.baseURI).href;
 }
 
 const empty = () => ({
