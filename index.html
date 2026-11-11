@@ -4,21 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
-    <script>
-      (function () {
-        var path = location.pathname;
-        var base;
-        if (path.endsWith("/")) base = path;
-        else if (path.split("/").pop().indexOf(".") === -1) base = path + "/";
-        else base = path.replace(/[^/]*$/, "");
-        var el = document.createElement("base");
-        el.href = base || "/";
-        document.head.prepend(el);
-      })();
-    </script>
+    <base href="/pelaontology/" />
     <title>Paleontology Research Expedition Programme</title>
     <meta name="description" content="Student handbook for the Qujing palaeontology research expedition: four field tasks, an observation record, and a group science poster." />
-    <link rel="stylesheet" href="./css/app.css?v=38" />
+    <link rel="stylesheet" href="/pelaontology/css/app.css?v=39" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip To Content</a>
@@ -69,7 +58,7 @@
       </nav>
     </div>
     <script type="importmap">
-      { "imports": { "three": "./public/vendor/three.module.js" } }
+      { "imports": { "three": "/pelaontology/public/vendor/three.module.js" } }
     </script>
     <div class="sign-gate" id="signGate">
       <form class="sign-card" id="signForm">
@@ -98,6 +87,6 @@
         <button class="btn btn-ghost" type="button" id="studentToggle">Student Sign In</button>
       </form>
     </div>
-    <script type="module" src="./js/app.js?v=38"></script>
+    <script type="module" src="/pelaontology/js/app.js?v=39"></script>
   </body>
 </html>

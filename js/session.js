@@ -1,5 +1,5 @@
 import { tr } from "./locale.js?v=16";
-import { loadState, pushWork, saveState, siteUrl } from "./storage.js?v=36";
+import { loadState, pushWork, saveState, siteUrl } from "./storage.js?v=37";
 
 const KEY = "qujing-student";
 const MONTH = 30 * 24 * 60 * 60 * 1000;
