@@ -67,7 +67,7 @@ export function mountSession(onReady) {
   const who = document.getElementById("whoChip");
   const paintWho = () => {
     const person = student();
-    if (who) who.textContent = person ? person.name : "";
+    if (who) who.textContent = person ? (person.role === "admin" ? tr("Admin", "管理员", "관리자") : person.name) : "";
     if (gate) gate.hidden = Boolean(person);
   };
   form?.addEventListener("submit", async (event) => {
@@ -97,6 +97,55 @@ export function mountSession(onReady) {
     await pullWork();
     await trace({ type: "sign-in", signedAt, expires: record.expires });
     onReady();
+  });
+  const adminForm = document.getElementById("adminForm");
+  const adminError = document.getElementById("adminError");
+  document.getElementById("adminToggle")?.addEventListener("click", () => {
+    form.hidden = true;
+    if (adminForm) adminForm.hidden = false;
+    if (adminError) adminError.hidden = true;
+  });
+  document.getElementById("studentToggle")?.addEventListener("click", () => {
+    if (adminForm) adminForm.hidden = true;
+    form.hidden = false;
+    error.hidden = true;
+  });
+  adminForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const data = new FormData(adminForm);
+    const username = String(data.get("username") || "").trim();
+    const password = String(data.get("password") || "");
+    adminForm.reset();
+    try {
+      const response = await fetch(siteUrl("api/admin/login"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok || !payload.ok) {
+        adminError.hidden = false;
+        adminError.textContent = response.status === 503
+          ? tr("Admin sign-in is not set up on this server.", "这台服务器还没有配置管理员登录。", "이 서버에는 관리자 로그인이 아직 설정되지 않았습니다.")
+          : tr("The username or password was not accepted.", "用户名或密码不正确。", "아이디 또는 비밀번호가 맞지 않습니다.");
+        return;
+      }
+      localStorage.setItem(KEY, JSON.stringify({
+        name: payload.name,
+        email: payload.email,
+        role: "admin",
+        signedAt: payload.signedAt,
+        expires: payload.expires
+      }));
+      adminError.hidden = true;
+      paintWho();
+      await pullWork();
+      await trace({ type: "sign-in", via: "admin", signedAt: payload.signedAt, expires: payload.expires });
+      onReady();
+    } catch {
+      adminError.hidden = false;
+      adminError.textContent = tr("The server did not accept this sign-in.", "后台没有接受这次登录。", "서버가 이 로그인을 받지 못했습니다.");
+    }
   });
   document.getElementById("signOut")?.addEventListener("click", async () => {
     await trace({ type: "sign-out" });

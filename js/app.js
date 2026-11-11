@@ -1,7 +1,7 @@
 import { stopScenes } from "./scene.js?v=15";
-import { applyChrome, setLang } from "./locale.js?v=33";
+import { applyChrome, setLang } from "./locale.js?v=34";
 import { mountHandbook, pages } from "./handbook.js?v=36";
-import { mountSession, student, trace } from "./session.js?v=37";
+import { mountSession, student, trace } from "./session.js?v=38";
 
 const NAV = [
   { href: "#/trip", on: ["trip", "sites", "zhujiang"] },
