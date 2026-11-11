@@ -1,9 +1,9 @@
-import { homePage, mountFront, playPage, qujingPage, watchPage } from "./front.js?v=36";
+import { homePage, mountFront, playPage, qujingPage, watchPage } from "./front.js?v=38";
 import { mountDrawBoard } from "./draw.js?v=15";
 import { mountFossilStage } from "./fossil-stage.js?v=13";
 import { lang, tr } from "./locale.js?v=16";
 import { mountStrataCanvas } from "./scene.js?v=15";
-import { loadState, recordUnit } from "./storage.js?v=36";
+import { loadState, recordUnit } from "./storage.js?v=38";
 
 function esc(value) {
   return String(value || "")

@@ -18,7 +18,7 @@
     </script>
     <title>Paleontology Research Expedition Programme</title>
     <meta name="description" content="Student handbook for the Qujing palaeontology research expedition: four field tasks, an observation record, and a group science poster." />
-    <link rel="stylesheet" href="./css/app.css?v=38" />
+    <link rel="stylesheet" href="./css/app.css?v=40" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip To Content</a>
@@ -85,8 +85,19 @@
         <label id="signEmail"><span>Email</span><input name="email" type="email" autocomplete="email" required /></label>
         <p class="feedback bad" id="signError" hidden></p>
         <button class="btn btn-primary" type="submit" id="signGo">Enter</button>
+        <button class="btn btn-ghost" type="button" id="adminToggle">Admin Sign In</button>
+      </form>
+      <form class="sign-card" id="adminForm" hidden>
+        <p class="kicker">Paleontology Research Expedition Programme</p>
+        <h1 id="adminTitle">Admin Sign In</h1>
+        <p id="adminNote">This sign-in is checked by the server and kept with the other accounts.</p>
+        <label id="adminUser"><span>Username</span><input name="username" type="email" autocomplete="username" required /></label>
+        <label id="adminPass"><span>Password</span><input name="password" type="password" autocomplete="current-password" required /></label>
+        <p class="feedback bad" id="adminError" hidden></p>
+        <button class="btn btn-primary" type="submit" id="adminGo">Enter</button>
+        <button class="btn btn-ghost" type="button" id="studentToggle">Student Sign In</button>
       </form>
     </div>
-    <script type="module" src="./js/app.js?v=37"></script>
+    <script type="module" src="./js/app.js?v=40"></script>
   </body>
 </html>

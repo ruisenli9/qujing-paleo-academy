@@ -58,7 +58,14 @@ const CHROME = {
     signNote: "Use your real name and email. This sign-in stays on this browser for 30 days, and the site keeps a record of it.",
     signName: "Real Name",
     signEmail: "Email",
-    signGo: "Enter"
+    signGo: "Enter",
+    adminToggle: "Admin Sign In",
+    studentToggle: "Student Sign In",
+    adminTitle: "Admin Sign In",
+    adminNote: "This sign-in is checked by the server and kept with the other accounts.",
+    adminUser: "Username",
+    adminPass: "Password",
+    adminGo: "Enter"
   },
   zh: {
     skip: "跳到主要内容",
@@ -80,7 +87,14 @@ const CHROME = {
     signNote: "填写真实姓名和邮箱。登录会记下来，在这台浏览器上 30 天内不用再填。",
     signName: "真实姓名",
     signEmail: "邮箱",
-    signGo: "进入"
+    signGo: "进入",
+    adminToggle: "管理员登录",
+    studentToggle: "学生登录",
+    adminTitle: "管理员登录",
+    adminNote: "用户名和密码由服务器核对，登录会计入后台账户。",
+    adminUser: "用户名",
+    adminPass: "密码",
+    adminGo: "进入"
   },
   ko: {
     skip: "본문으로 이동",
@@ -102,7 +116,14 @@ const CHROME = {
     signNote: "실명과 이메일을 적으세요. 로그인은 기록되고, 이 브라우저에서는 30일 동안 다시 적지 않아도 됩니다.",
     signName: "실명",
     signEmail: "이메일",
-    signGo: "들어가기"
+    signGo: "들어가기",
+    adminToggle: "관리자 로그인",
+    studentToggle: "학생 로그인",
+    adminTitle: "관리자 로그인",
+    adminNote: "아이디와 비밀번호는 서버에서 확인하며, 로그인은 계정 기록에 남습니다.",
+    adminUser: "아이디",
+    adminPass: "비밀번호",
+    adminGo: "들어가기"
   }
 };
 
@@ -142,6 +163,20 @@ export function applyChrome() {
   if (signEmail) signEmail.textContent = c.signEmail;
   const signGo = document.getElementById("signGo");
   if (signGo) signGo.textContent = c.signGo;
+  const adminToggle = document.getElementById("adminToggle");
+  if (adminToggle) adminToggle.textContent = c.adminToggle;
+  const studentToggle = document.getElementById("studentToggle");
+  if (studentToggle) studentToggle.textContent = c.studentToggle;
+  const adminTitle = document.getElementById("adminTitle");
+  if (adminTitle) adminTitle.textContent = c.adminTitle;
+  const adminNote = document.getElementById("adminNote");
+  if (adminNote) adminNote.textContent = c.adminNote;
+  const adminUser = document.querySelector("#adminUser span");
+  if (adminUser) adminUser.textContent = c.adminUser;
+  const adminPass = document.querySelector("#adminPass span");
+  if (adminPass) adminPass.textContent = c.adminPass;
+  const adminGo = document.getElementById("adminGo");
+  if (adminGo) adminGo.textContent = c.adminGo;
   document.querySelectorAll("[data-lang]").forEach((button) => {
     button.setAttribute("aria-pressed", String(button.dataset.lang === lang()));
   });

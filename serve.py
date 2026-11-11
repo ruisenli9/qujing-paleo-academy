@@ -4,6 +4,7 @@ School SSO runs only when OIDC_CLIENT_ID and OIDC_CLIENT_SECRET are set
 in the server environment. The secret never leaves this process.
 """
 import hashlib
+import hmac
 import json
 import os
 import secrets
@@ -23,7 +24,27 @@ ISSUER = "https://oidc.ycyw.com"
 MONTH = 30 * 24 * 60 * 60 * 1000
 STATES = {}
 DISCOVERY = None
-APP_ROUTES = ("/api/trace", "/api/account", "/api/work", "/api/traces", "/auth/login", "/auth/callback")
+APP_ROUTES = ("/api/trace", "/api/account", "/api/work", "/api/traces", "/api/admin/login", "/auth/login", "/auth/callback")
+
+
+def load_dotenv():
+    path = os.path.join(ROOT, ".env")
+    if not os.path.exists(path):
+        return
+    with open(path, encoding="utf-8") as handle:
+        for line in handle:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+
+def same_secret(left, right):
+    return hmac.compare_digest(
+        hashlib.sha256(str(left).encode("utf-8")).digest(),
+        hashlib.sha256(str(right).encode("utf-8")).digest(),
+    )
 
 
 def oidc_ready():
@@ -138,7 +159,7 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_POST(self):
         _prefix, path = split_mount(self, self.path)
-        if path not in ("/api/trace", "/api/account", "/api/work"):
+        if path not in ("/api/trace", "/api/account", "/api/work", "/api/admin/login"):
             self.send_error(404)
             return
         try:
@@ -148,6 +169,29 @@ class Handler(SimpleHTTPRequestHandler):
             return
         if body is None:
             self.send_error(413)
+            return
+        if path == "/api/admin/login":
+            username = str(body.get("username") or "").strip()
+            password = str(body.get("password") or "")
+            configured = os.environ.get("ADMIN_USER", "").strip()
+            secret = os.environ.get("ADMIN_PASSWORD", "")
+            if not configured or not secret:
+                self.send_json(503, {"ok": False, "reason": "admin-not-configured"})
+                return
+            if not same_secret(username.lower(), configured.lower()) or not same_secret(password, secret):
+                self.send_json(401, {"ok": False, "reason": "admin-rejected"})
+                return
+            signed = int(time.time() * 1000)
+            record = {"name": "Admin", "email": configured, "role": "admin", "signedAt": signed, "expires": signed + MONTH}
+            os.makedirs(os.path.dirname(ACCOUNTS), exist_ok=True)
+            with open(ACCOUNTS, "a", encoding="utf-8") as handle:
+                handle.write(json.dumps(record, ensure_ascii=False) + "\n")
+            data = load_work(configured)
+            data["name"] = "Admin"
+            data["email"] = configured.lower()
+            data["role"] = "admin"
+            store_work(data)
+            self.send_json(200, {"ok": True, **record})
             return
         email = str(body.get("email") or "").strip()
         name = str(body.get("name") or "").strip()
@@ -297,6 +341,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 
 if __name__ == "__main__":
+    load_dotenv()
     os.chdir(ROOT)
     server = ThreadingHTTPServer(("0.0.0.0", 4009), Handler)
     print("http://127.0.0.1:4009/")
