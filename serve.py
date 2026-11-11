@@ -298,6 +298,6 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     os.chdir(ROOT)
-    server = ThreadingHTTPServer(("127.0.0.1", 8765), Handler)
-    print("http://127.0.0.1:8765/")
+    server = ThreadingHTTPServer(("0.0.0.0", 4009), Handler)
+    print("http://127.0.0.1:4009/")
     server.serve_forever()
