@@ -538,6 +538,23 @@ textarea { min-height: 90px; resize: vertical; }
 .primary-nav a[href="#/watch"], .bottom-nav a[href="#/watch"] { background: #f3e8cc; color: #19532b; }
 .primary-nav a[aria-current="page"], .bottom-nav a[aria-current="page"], #mineLink[aria-current="page"] { background: #ffca26; color: #19532b; }
 
+.film-card { background: #f3e8cc; color: #19532b; }
+.film-card h2, .film-card p, .film-card figcaption, .film-card li { color: #19532b; }
+.film-card a:not(.btn),
+#main .sheet a:not(.btn),
+.pack-links a,
+.figure figcaption a,
+.learn-path a,
+.time-stack a,
+.note-list .note:nth-child(5n+1) a,
+.note-list .note:nth-child(5n+2) a,
+.note-list .note:nth-child(5n+3) a { color: #d42518; }
+#main .sheet:nth-of-type(6n+4) a:not(.btn),
+#main .sheet:nth-of-type(6n+5) a:not(.btn),
+#main .sheet:nth-of-type(6n+6) a:not(.btn),
+.note-list .note:nth-child(5n+4) a,
+.note-list .note:nth-child(5n+5) a { color: #ffca26; }
+
 @media (max-width: 980px) {
   .app-shell { display: block; padding-bottom: 88px; }
   .grid-3, .grid-2, .model-cards, .pair, .home-hero, .task-stage, .home-out, .time-stack, .time-stack article, .day-rich, .day-spread, .learn-path, .tour-grid, .film-band, .cover { grid-template-columns: 1fr; }
