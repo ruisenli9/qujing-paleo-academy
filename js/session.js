@@ -115,7 +115,11 @@ export function mountSession(onReady) {
     const data = new FormData(adminForm);
     const username = String(data.get("username") || "").trim();
     const password = String(data.get("password") || "");
-    adminForm.reset();
+    if (!username || !password) {
+      adminError.hidden = false;
+      adminError.textContent = tr("Enter the username and password.", "请填写用户名和密码。", "아이디와 비밀번호를 입력하세요.");
+      return;
+    }
     try {
       const response = await fetch(siteUrl("api/admin/login"), {
         method: "POST",
@@ -125,7 +129,8 @@ export function mountSession(onReady) {
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || !payload.ok) {
         adminError.hidden = false;
-        adminError.textContent = response.status === 503
+        const offline = response.status === 404 || response.status === 405 || response.status === 502 || response.status === 503 || !payload.reason;
+        adminError.textContent = offline
           ? tr("Admin sign-in is not set up on this server.", "这台服务器还没有配置管理员登录。", "이 서버에는 관리자 로그인이 아직 설정되지 않았습니다.")
           : tr("The username or password was not accepted.", "用户名或密码不正确。", "아이디 또는 비밀번호가 맞지 않습니다.");
         return;
@@ -137,6 +142,7 @@ export function mountSession(onReady) {
         signedAt: payload.signedAt,
         expires: payload.expires
       }));
+      adminForm.reset();
       adminError.hidden = true;
       paintWho();
       await pullWork();
@@ -144,13 +150,19 @@ export function mountSession(onReady) {
       onReady();
     } catch {
       adminError.hidden = false;
-      adminError.textContent = tr("The server did not accept this sign-in.", "后台没有接受这次登录。", "서버가 이 로그인을 받지 못했습니다.");
+      adminError.textContent = tr("Admin sign-in is not set up on this server.", "这台服务器还没有配置管理员登录。", "이 서버에는 관리자 로그인이 아직 설정되지 않았습니다.");
     }
   });
-  document.getElementById("signOut")?.addEventListener("click", async () => {
-    await trace({ type: "sign-out" });
+  document.getElementById("signOut")?.addEventListener("click", () => {
+    const who = student();
     localStorage.removeItem(KEY);
     paintWho();
+    if (!who) return;
+    fetch(siteUrl("api/trace"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: who.email, name: who.name, type: "sign-out" })
+    }).catch(() => {});
   });
   paintWho();
   if (student()) pullWork().then(onReady);

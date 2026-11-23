@@ -171,6 +171,7 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_error(413)
             return
         if path == "/api/admin/login":
+            load_dotenv()
             username = str(body.get("username") or "").strip()
             password = str(body.get("password") or "")
             configured = os.environ.get("ADMIN_USER", "").strip()
