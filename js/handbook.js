@@ -92,7 +92,8 @@ function tripPage() {
       ["13:00–15:00", say("Xitun Fauna exhibition", "西屯动物群（小展馆）", "Xitun 동물군 전시"), say("Xitun Fauna gallery", "西屯动物群小展馆", "Xitun 동물군 전시관"), ""],
       ["15:00–16:30", say("Visit to the Ancient Fish Kingdom Museum", "古鱼王国博物院", "고어왕국 박물관 관람"), say("Ancient Fish Kingdom Museum", "古鱼王国博物院", "고어왕국 박물관"), ""],
       ["16:30–18:00", say("Three-dimensional reconstruction, fossil preparation, numbering and storage", "三维重建、化石修理、编号和保存", "3차원 복원, 화석 수리, 번호 부여 및 보관"), say("Ancient Fish Kingdom Museum", "古鱼王国博物院", "고어왕국 박물관"), say("Demonstration by staff. Students are not to operate the CT scanner. Only material identified and approved that morning may be used. Vertebrate fossils are not to be removed. A fragment may leave the site only after identification and approval; otherwise it is recorded by a mould or a rubbing.", "工作人员演示。学生不操作 CT 扫描仪。只用当天上午已经鉴别并允许使用的材料。脊椎动物化石原则上不带走。碎片须先经鉴别并获得许可，方可带离；否则以翻模或拓印记录。", "직원이 시연합니다. 학생은 CT 스캐너를 조작하지 않습니다. 당일 오전에 확인하고 허가된 자료만 사용합니다. 척추동물 화석은 원칙적으로 반출하지 않습니다. 조각은 확인과 허가 후에만 가져갈 수 있으며, 그렇지 않으면 거푸집이나 탁본으로 기록합니다.")],
-      ["18:00–19:30", say("Return to the hotel and dinner", "回酒店，晚餐", "호텔 귀환 및 저녁 식사"), say("Atour, Qujing South Gate", "曲靖南城门亚朵", "취징 남문 아투어"), say("The day is expected to conclude at 19:30.", "预计 19:30 结束。", "일정은 19:30에 마칠 예정입니다.")]
+      ["18:00–19:30", say("Return to the hotel and dinner", "回酒店，晚餐", "호텔 귀환 및 저녁 식사"), say("Atour, Qujing South Gate", "曲靖南城门亚朵", "취징 남문 아투어"), ""],
+      ["19:30–21:30", say("Visit to the South Gate", "南城门参观", "남문 참관"), say("South Gate", "南城门", "남문"), say("Two hours of independent exploration.", "2 小时，自由探索。", "2시간, 자유 탐색.")]
     ]],
     [tr("27 November", "11月27日", "11월 27일"), "day-c", [
       ["07:00–07:30", say("Wake-up", "起床", "기상"), say("Atour, Qujing South Gate", "曲靖南城门亚朵", "취징 남문 아투어"), ""],
@@ -111,7 +112,7 @@ function tripPage() {
       ["07:00–07:30", say("Wake-up", "起床", "기상"), say("Xiake Caotang, Pearl River Source", "珠江源霞客草堂", "주강 발원지 샤커차오탕"), ""],
       ["07:00–08:00", say("Breakfast", "早餐", "아침 식사"), say("Xiake Caotang, Pearl River Source", "珠江源霞客草堂", "주강 발원지 샤커차오탕"), ""],
       ["08:00–09:00", say("Lecture: How a Fossil Is Brought to Life", "报告：如何让化石「活」起来", "강연: 화석을 어떻게 되살리는가"), say("Xiake Caotang meeting room, Pearl River Source", "珠江源霞客草堂会议室", "주강 발원지 샤커차오탕 회의실"), ""],
-      ["09:15–10:30", say("Group presentations and the closing ceremony", "小组汇报与结营", "모둠 발표와 폐회"), say("Xiake Caotang, Pearl River Source", "珠江源霞客草堂", "주강 발원지 샤커차오탕"), say("The Chongqing students depart at 10:30.", "重庆学生 10:30 离开。", "충칭 학생은 10:30에 출발합니다.")],
+      ["09:15–10:30", say("Group presentations and the closing ceremony", "小组汇报与结营", "모둠 발표와 폐회"), say("Xiake Caotang, Pearl River Source", "珠江源霞客草堂", "주강 발원지 샤커차오탕"), say("CQ team will depart at 10:30.", "重庆队 10:30 离开。", "충칭 팀은 10:30에 출발합니다.")],
       ["11:30–12:30", say("Lunch", "午餐", "점심"), say("Dining place to be confirmed", "用餐地点未定", "식사 장소 미정"), ""],
       ["12:30–13:00", say("Check-out", "退房", "체크아웃"), say("Xiake Caotang, Pearl River Source", "珠江源霞客草堂", "주강 발원지 샤커차오탕"), say("The assembly time will follow the confirmed train or flight.", "集合时间按实际的火车或航班来。", "집결 시각은 확정된 기차나 항공편을 따릅니다.")],
       ["about 13:00", say("Departure", "出发", "출발"), say("Airport", "机场", "공항"), say("The journey from the Pearl River Source to Changshui Airport takes approximately two and a half hours. A departure at 13:00 is expected to arrive at about 15:30.", "珠江源到长水机场大约两个半小时。13:00 出发大约 15:30 到。", "주강 발원지에서 창수이 공항까지 약 2시간 30분입니다. 13:00 출발은 15:30경 도착으로 예상됩니다.")]
