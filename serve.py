@@ -142,6 +142,12 @@ def public_base(handler):
 
 
 class Handler(SimpleHTTPRequestHandler):
+    def log_message(self, format, *args):
+        # 跳过负载均衡器的健康检查（HEAD 请求），避免刷爆日志
+        if self.command == "HEAD":
+            return
+        super().log_message(format, *args)
+
     def end_headers(self):
         self.send_header("Cache-Control", "no-store")
         super().end_headers()

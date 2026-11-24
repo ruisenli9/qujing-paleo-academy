@@ -29,7 +29,7 @@ const fileEnv = loadEnvFile(path.join(__dirname, ".env"));
 
 module.exports = {
   apps: [{
-    name: "qujing-paleo",
+    name: "edfutures-qujing-paleo",
     script: "serve.py",
     interpreter: "python3",
     cwd: __dirname, // 与 ecosystem.config.js 同目录，放哪都行
